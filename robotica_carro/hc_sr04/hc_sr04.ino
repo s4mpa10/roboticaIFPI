@@ -16,7 +16,7 @@ Ultrasonic ultrasonic(8,9);
 // int pinTrigger = 8; //Gatilho do pulso do sensor 
 // int pinEcho = 9; // ler a saída do sensor
 
-int distancia;
+int distancia = 0;
 
 // float tempoEcho = 0;
 
@@ -68,7 +68,6 @@ void andarFrente() {
   digitalWrite(in4, HIGH);  // frente
   digitalWrite(enA, velocidade);
   digitalWrite(enB, velocidade);
-  delay(500);
 }
 
 void andarParaTras() {
@@ -78,7 +77,6 @@ void andarParaTras() {
   digitalWrite(in4, LOW);   // frente
   digitalWrite(enA, velocidade);
   digitalWrite(enB, velocidade);
-  delay(500);
 }
 
 void andarEsquerda() {
@@ -88,12 +86,11 @@ void andarEsquerda() {
   digitalWrite(in4, LOW);   // frente
   digitalWrite(enA, velocidade);
   digitalWrite(enB, velocidade);
-  delay(500);
 }
 
 void andarDireita() {
   digitalWrite(in1, LOW);   // frente
-  digitalWrite(in2, LOW);   // para trás
+  digitalWrite(in2, HIGH);   // para trás
   digitalWrite(in3, LOW);   // para tras
   digitalWrite(in4, HIGH);  // frente - Direita
   digitalWrite(enA, velocidade);
@@ -106,7 +103,6 @@ void frear(){
   digitalWrite(in2, LOW);   // para trás
   digitalWrite(in3, LOW);   // para tras
   digitalWrite(in4, LOW);  //  frente
-  delay(1500);
 }
 
 // void dispararPulso(){
