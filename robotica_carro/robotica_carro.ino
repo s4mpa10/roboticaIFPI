@@ -21,7 +21,7 @@ void setup() {
 }
 
 void loop() {
-  andarFrete();
+  andarFrente();
   andarParaTras();
   andarEsquerda();
   andarDireita();
