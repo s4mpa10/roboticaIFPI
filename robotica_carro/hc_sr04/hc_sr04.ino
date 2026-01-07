@@ -15,6 +15,8 @@ int pinDigitalSL2 = 11;
 int ledVerde = 12;
 int ledVermelho = 13;
 
+int pinBuzzer = A1;
+
 int velocidade = 100;
 
 Ultrasonic ultrasonic(8,9);
@@ -32,9 +34,11 @@ void setup() {
 
   pinMode(ledVerde, OUTPUT);
   pinMode(ledVermelho, OUTPUT);
-
+ 
   pinMode(pinDigitalSL1, INPUT);
   pinMode(pinDigitalSL2, INPUT);
+
+  pinMode(pinBuzzer, OUTPUT);
 
   Serial.begin(9600);
 }
@@ -44,16 +48,27 @@ void loop() {
   Serial.println(distancia);
   Serial.println("cm");
 
-  if (distancia < 10){
-    frear();
-    digitalWrite(ledVermelho, HIGH);
-    digitalWrite(ledVerde, LOW);
-    andarDireita();
-  }
-  else{
+  if (((digitalRead(pinDigitalSL1)) == HIGH) && ((digitalRead(pinDigitalSL2)) == HIGH)){
+    Serial.println("Linha detectada");
+    if (distancia < 10){
+      frear();
+      digitalWrite(ledVermelho, HIGH);
+      digitalWrite(ledVerde, LOW);
+      digitalWrite(pinBuzzer, HIGH);
+      andarDireita();
+    }
+    else{
+      digitalWrite(ledVermelho, LOW);
+      digitalWrite(ledVerde, HIGH);
+      digitalWrite(pinBuzzer, LOW);
+      andarFrente();
+    }
+  } else{
+    Serial.println("Linha não detectada");
     digitalWrite(ledVermelho, LOW);
-    digitalWrite(ledVerde, HIGH);
-    andarFrente();
+    digitalWrite(ledVerde, LOW);
+    digitalWrite(pinBuzzer, LOW);
+
   }
 
   delay(100);
