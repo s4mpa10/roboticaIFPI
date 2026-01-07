@@ -19,14 +19,7 @@ int velocidade = 100;
 
 Ultrasonic ultrasonic(8,9);
 
-<<<<<<< HEAD
 int distancia;
-=======
-// int pinTrigger = 8; //Gatilho do pulso do sensor 
-// int pinEcho = 9; // ler a saída do sensor
-
-int distancia = 0;
->>>>>>> fef768ee1bf55883d3c4cdb2b5149d01f9fd6ce8
 
 void setup() {
   pinMode(enA, OUTPUT);
@@ -95,7 +88,7 @@ void andarEsquerda() {
 
 void andarDireita() {
   digitalWrite(in1, LOW);   // frente
-  digitalWrite(in2, HIGH);   // para trás
+  digitalWrite(in2, LOW);   // para trás
   digitalWrite(in3, LOW);   // para tras
   digitalWrite(in4, HIGH);  // frente - Direita
   digitalWrite(enA, velocidade);
