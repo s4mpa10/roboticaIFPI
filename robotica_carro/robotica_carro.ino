@@ -1,3 +1,5 @@
+#include <Ultrasonic.h>
+
 // Movimentos básicos do carrinho
 int in1 = 2;
 int in2 = 4;
@@ -7,7 +9,20 @@ int in3 = 5;
 int in4 = 7;
 int enB = 6;
 
-int velocidade = 100;
+int pinDigitalSL1 = 10;
+int pinDigitalSL2 = 11;
+
+int ledVerde = 12;
+int ledVermelho = 13;
+
+int pinBuzzer = A1;
+
+int velocidadeReta = 80;
+int velocidadeCurva = 100;
+
+Ultrasonic ultrasonic(8,9);
+
+int distancia;
 
 void setup() {
   pinMode(enA, OUTPUT);
@@ -18,51 +33,125 @@ void setup() {
   pinMode(in3, OUTPUT);
   pinMode(in4, OUTPUT);
 
+  pinMode(ledVerde, OUTPUT);
+  pinMode(ledVermelho, OUTPUT);
+ 
+  pinMode(pinDigitalSL1, INPUT);
+  pinMode(pinDigitalSL2, INPUT);
+
+  pinMode(pinBuzzer, OUTPUT);
+
+  Serial.begin(9600);
 }
 
 void loop() {
-  andarFrente();
-  andarParaTras();
-  andarEsquerda();
-  andarDireita();
+  // distancia = ultrasonic.read();
+  // Serial.println(distancia);
+  // Serial.println("cm");
+
+  if (((digitalRead(pinDigitalSL1)) == LOW) && ((digitalRead(pinDigitalSL2)) == LOW)){
+    Serial.println("Linha detectada");
+    andarFrente();
+  }
+  
+  else if (((digitalRead(pinDigitalSL1)) == HIGH) && ((digitalRead(pinDigitalSL2)) == LOW)){
+    Serial.println("Linha 1 não detectada e Linha 2 detectada");
+    andarEsquerda();
+  }
+
+  else if (((digitalRead(pinDigitalSL1)) == LOW) && ((digitalRead(pinDigitalSL2)) == HIGH)){
+    Serial.println("Linha 1 detectada e Linha 2 não detectada");
+    andarDireita();
+
+  }
+
+  if (((digitalRead(pinDigitalSL1)) == HIGH) && ((digitalRead(pinDigitalSL2)) == HIGH)){
+    Serial.println("Linha 1 não detectada e Linha 2 não detectada");
+    frear();
+  }
+
+  
+
+  // if (((digitalRead(pinDigitalSL1)) == HIGH) || ((digitalRead(pinDigitalSL2)) == HIGH)){
+  //   Serial.println("Linha detectada");
+  //   andarFrente();
+
+  //   if (((digitalRead(pinDigitalSL1)) == LOW) && ((digitalRead(pinDigitalSL2)) == LOW)){
+  //     frear();
+  //     digitalWrite(ledVermelho, HIGH);
+  //     digitalWrite(ledVerde, LOW);
+  //     digitalWrite(pinBuzzer, HIGH);
+  //     andarParaTras();
+  //   } else{
+  //     Serial.println("Linha não detectada");
+  //     digitalWrite(ledVermelho, LOW);
+  //     digitalWrite(ledVerde, LOW);
+  //     digitalWrite(pinBuzzer, LOW);
+  // }
+    
+
+
+
+    // frear();
+    // digitalWrite(ledVermelho, HIGH);
+    // digitalWrite(ledVerde, LOW);
+    // digitalWrite(pinBuzzer, HIGH);
+    // andarDireita();
+    // }
+    // else{
+    //   digitalWrite(ledVermelho, LOW);
+    //   digitalWrite(ledVerde, HIGH);
+    //   digitalWrite(pinBuzzer, LOW);
+    //   andarFrente();
+    // }
+  // } 
+
+  // delay(100);
 }
 
 void andarFrente() {
-  digitalWrite(in1, HIGH);  // frente
-  digitalWrite(in2, LOW);   // para trás
-  digitalWrite(in3, LOW);   // para tras
-  digitalWrite(in4, HIGH);  // frente
-  digitalWrite(enA, velocidade);
-  digitalWrite(enB, velocidade);
-  delay(500);
+  digitalWrite(in1, LOW);  // para tras
+  digitalWrite(in2, HIGH);   // frente
+  analogWrite(enA, velocidadeReta);
+
+  digitalWrite(in3, HIGH);   // frente
+  digitalWrite(in4, LOW);  // para tras
+  analogWrite(enB, velocidadeReta);
 }
 
 void andarParaTras() {
-  digitalWrite(in1, LOW);   // frente
-  digitalWrite(in2, HIGH);  // para trás
-  digitalWrite(in3, HIGH);  // para tras
-  digitalWrite(in4, LOW);   // frente
-  digitalWrite(enA, velocidade);
-  digitalWrite(enB, velocidade);
-  delay(500);
+  digitalWrite(in1, HIGH);   // para tras
+  digitalWrite(in2, LOW);  // frente
+  analogWrite(enA, velocidadeReta);
+
+  digitalWrite(in3, LOW);  // frente
+  digitalWrite(in4, HIGH);   // para tras
+  analogWrite(enB, velocidadeReta);
 }
 
 void andarEsquerda() {
   digitalWrite(in1, HIGH);  // frente - Esquerda
   digitalWrite(in2, LOW);   // para trás
+  analogWrite(enA, velocidadeCurva);
+
   digitalWrite(in3, LOW);   // para tras
   digitalWrite(in4, LOW);   // frente
-  digitalWrite(enA, velocidade);
-  digitalWrite(enB, velocidade);
-  delay(500);
+  analogWrite(enB, 0);
 }
 
 void andarDireita() {
   digitalWrite(in1, LOW);   // frente
   digitalWrite(in2, LOW);   // para trás
+  analogWrite(enA, 0);
+
   digitalWrite(in3, LOW);   // para tras
   digitalWrite(in4, HIGH);  // frente - Direita
-  digitalWrite(enA, velocidade);
-  digitalWrite(enB, velocidade);
-  delay(500);
+  analogWrite(enB, velocidadeCurva);
+}
+
+void frear(){
+  digitalWrite(in1, LOW);   // frente
+  digitalWrite(in2, LOW);   // para trás
+  digitalWrite(in3, LOW);   // para tras
+  digitalWrite(in4, LOW);  //  frente
 }

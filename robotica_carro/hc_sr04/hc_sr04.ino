@@ -44,34 +44,76 @@ void setup() {
 }
 
 void loop() {
-  distancia = ultrasonic.read();
-  Serial.println(distancia);
-  Serial.println("cm");
+  // distancia = ultrasonic.read();
+  // Serial.println(distancia);
+  // Serial.println("cm");
 
   if (((digitalRead(pinDigitalSL1)) == HIGH) && ((digitalRead(pinDigitalSL2)) == HIGH)){
     Serial.println("Linha detectada");
-    if (distancia < 10){
-      frear();
-      digitalWrite(ledVermelho, HIGH);
-      digitalWrite(ledVerde, LOW);
-      digitalWrite(pinBuzzer, HIGH);
-      andarDireita();
-    }
-    else{
-      digitalWrite(ledVermelho, LOW);
-      digitalWrite(ledVerde, HIGH);
-      digitalWrite(pinBuzzer, LOW);
-      andarFrente();
-    }
-  } else{
-    Serial.println("Linha não detectada");
-    digitalWrite(ledVermelho, LOW);
-    digitalWrite(ledVerde, LOW);
-    digitalWrite(pinBuzzer, LOW);
+    andarFrente();
+  }
+  
+  else if (((digitalRead(pinDigitalSL1)) == LOW) && ((digitalRead(pinDigitalSL2)) == HIGH)){
+    Serial.println("Linha 1 não detectada e Linha 2 detectada");
+    andarEsquerda();
+  }
+
+  else if (((digitalRead(pinDigitalSL1)) == HIGH) && ((digitalRead(pinDigitalSL2)) == LOW)){
+    Serial.println("Linha 1 detectada e Linha 2 não detectada");
+    andarDireita();
 
   }
 
-  delay(100);
+  if (((digitalRead(pinDigitalSL1)) == LOW) && ((digitalRead(pinDigitalSL2)) == LOW)){
+    Serial.println("Linha 1 não detectada e Linha 2 não detectada");
+    frear();
+  }
+
+  
+
+
+
+
+
+  // if (((digitalRead(pinDigitalSL1)) == HIGH) || ((digitalRead(pinDigitalSL2)) == HIGH)){
+  //   Serial.println("Linha detectada");
+  //   andarFrente();
+
+  //   if (((digitalRead(pinDigitalSL1)) == LOW) && ((digitalRead(pinDigitalSL2)) == LOW)){
+  //     frear();
+  //     digitalWrite(ledVermelho, HIGH);
+  //     digitalWrite(ledVerde, LOW);
+  //     digitalWrite(pinBuzzer, HIGH);
+  //     andarParaTras();
+  //   } else{
+  //     Serial.println("Linha não detectada");
+  //     digitalWrite(ledVermelho, LOW);
+  //     digitalWrite(ledVerde, LOW);
+  //     digitalWrite(pinBuzzer, LOW);
+  // }
+    
+
+
+
+
+
+
+
+    // frear();
+    // digitalWrite(ledVermelho, HIGH);
+    // digitalWrite(ledVerde, LOW);
+    // digitalWrite(pinBuzzer, HIGH);
+    // andarDireita();
+    // }
+    // else{
+    //   digitalWrite(ledVermelho, LOW);
+    //   digitalWrite(ledVerde, HIGH);
+    //   digitalWrite(pinBuzzer, LOW);
+    //   andarFrente();
+    // }
+  // } 
+
+  // delay(100);
 }
 
 void andarFrente() {
